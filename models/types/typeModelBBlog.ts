@@ -9,7 +9,7 @@ type T_BlogSchema = {
 interface I_BBlog {
 	createBlog(data: T_BlogSchema): void;
     getBlog() : void;
-    getBlogList() : void;
+    getBlogList() : Promise<any>; // TODO Change to proper type later
     searchBlog?() : void;
 }
 

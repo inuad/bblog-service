@@ -34,14 +34,17 @@ class BBlogModel implements I_BBlog {
         
     }
 
-    getBlogList = async () => {
-
+    getBlogList =  () => {
+		return new Promise(async (resolve, reject) => {
+			const result = await this.instanceModelBBlog.find({}, {}, {sort: "-1"})
+			return resolve(result);
+		})
     }
 
     searchBlog = async () => {
         try{
-            const mBBlog = await this.instanceModelBBlog.find({ _id: "6146f853b3988223b689c256" })
-            console.log(mBBlog)
+            const result = await this.instanceModelBBlog.find({ _id: "6146f853b3988223b689c256" })
+            return result;
         }catch(err){
             console.log(err);
         }

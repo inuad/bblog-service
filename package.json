@@ -5,7 +5,9 @@
   "main": "index.js",
   "scripts": {
     "dev": "npx tsnd --respawn --transpile-only server.ts",
-    "test": "npx jest"
+    "test": "npx jest",
+    "seed": "npx ts-node ./tests/dbSeed.ts 10",
+    "clear": "npx ts-node ./tests/dbClearSeed.ts"
   },
   "keywords": [],
   "author": "",
@@ -13,12 +15,14 @@
   "dependencies": {
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
-    "mongoose": "^5.12.5"
+    "mongoose": "^5.12.5",
+    "slugify": "^1.6.0"
   },
   "devDependencies": {
     "@types/express": "^4.17.11",
     "@types/jest": "^26.0.22",
     "@types/node": "^14.14.41",
+    "faker": "^5.5.3",
     "jest": "^26.6.3",
     "ts-jest": "^26.5.5",
     "ts-node-dev": "^1.1.6",

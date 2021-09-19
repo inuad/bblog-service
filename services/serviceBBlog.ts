@@ -18,8 +18,9 @@ export default class BBlogService<T extends I_BBlog> {
         this.mBBlog.getBlog();
     }
 
-    getBlogList = () => {
-        this.mBBlog.getBlogList();
+    getBlogList = async () => {
+        let result = await this.mBBlog.getBlogList();
+		return result;
     }
 
     searchBlog = () => {
@@ -27,6 +28,4 @@ export default class BBlogService<T extends I_BBlog> {
             this.mBBlog.searchBlog();
         }
     }
-
-    
 }

@@ -1,5 +1,7 @@
-import { Request, Response } from "express"
-import serviceBBlog from "../services/serviceBBlog"
+import { Request, Response } from "express";
+import slugify from "slugify";
+import CustomResponse from "../modules/responseObj";
+import serviceBBlog from "../services/serviceBBlog";
 import modelBBlog from "../models/modelBBlog";
 
 class BBlogController {
@@ -17,11 +19,16 @@ class BBlogController {
         return res.send(`Get Blog : ${req.params.slug}`);
     }
 
-    getBlogList = (req:Request, res:Response) => {
+    getBlogList = async (req:Request, res:Response) => {
+		const serviceName = "Get Blog List"
+		let response = new CustomResponse();
         let service = new serviceBBlog<typeof modelBBlog>(modelBBlog);
-		service.getBlogList();
+		let result = {
+			data: await service.getBlogList()
+		}
 
-        return res.send("Get Blog List");
+		response.setResponse(serviceName, 200, "Success", true, result);
+        return res.send(response);
     }
     
     searchBlog = (req:Request, res:Response) => {
