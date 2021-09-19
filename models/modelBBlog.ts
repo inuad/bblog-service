@@ -8,24 +8,44 @@ class BBlogModel implements I_BBlog {
 	constructor() {
 		this.blogSchema = new Schema<T_BlogSchema>({
 			title: { type: String, required: true },
-			created_at: { type: Date, required: false }
+            detail: { type: String, required: true },
+            image: { type: String, required: false },
+			created_at: { type: Date, required: true, default: new Date() },
+			created_by: { type: String, required: false, default: "iNuad"},
 		}, {
 			versionKey: false
 		})
 		this.instanceModelBBlog = model<T_BlogSchema>('Blog', this.blogSchema);
 	}
 
-	createBlog = async () => {
+	createBlog = async (data: T_BlogSchema) => {
 		try{
-			const docBBlog = new this.instanceModelBBlog({ title: "Hello" });
-			await docBBlog.save()
+			const docBBlog = new this.instanceModelBBlog(data);
+			await docBBlog.save();
 
-			console.log(docBBlog)
+			console.log(docBBlog);
 		}catch(err){
-			console.log(err)
+			console.log(err);
 
 		}
 	}
+
+    getBlog = async () => {
+        
+    }
+
+    getBlogList = async () => {
+
+    }
+
+    searchBlog = async () => {
+        try{
+            const mBBlog = await this.instanceModelBBlog.find({ _id: "6146f853b3988223b689c256" })
+            console.log(mBBlog)
+        }catch(err){
+            console.log(err);
+        }
+    }
 }
 
 export default new BBlogModel();

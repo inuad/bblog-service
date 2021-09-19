@@ -1,10 +1,16 @@
 type T_BlogSchema = {
 	title: string,
-	created_at: Date
+    detail: string,
+    image: string,
+	created_at?: Date
+    created_by?: string,
 }
 
 interface I_BBlog {
-	createBlog: () => void;
+	createBlog(data: T_BlogSchema): void;
+    getBlog() : void;
+    getBlogList() : void;
+    searchBlog?() : void;
 }
 
 export {
