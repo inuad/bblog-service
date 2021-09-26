@@ -5,7 +5,7 @@ class ResponseObjClass {
 	message: (string|null) = 'Not found';
 	response: any;
 
-	setResponse(serviceName:string, statusCode:number, message:(string|null), status:boolean, response:any) : Object {
+	setResponse(serviceName:string, statusCode:number, message:(string|null), status:boolean, response: object | null) : Object {
 		this.serviceName = serviceName;
 		this.status = status;
 		this.statusCode = statusCode;

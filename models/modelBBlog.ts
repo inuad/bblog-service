@@ -1,12 +1,13 @@
 import { Model, model, Schema } from "mongoose";
-import { T_BlogSchema, I_BBlog } from "./types/typeModelBBlog"
+import { T_BlogSchema, I_BBlogModel } from "./types/typeModelBBlog"
 
-class BBlogModel implements I_BBlog {
+class BBlogModel implements I_BBlogModel {
 	public blogSchema:Schema<T_BlogSchema>;
 	private instanceModelBBlog:Model<T_BlogSchema>;
 
 	constructor() {
 		this.blogSchema = new Schema<T_BlogSchema>({
+			slug: { type: String, required: true },
 			title: { type: String, required: true },
             detail: { type: String, required: true },
             image: { type: String, required: false },
@@ -30,24 +31,18 @@ class BBlogModel implements I_BBlog {
 		}
 	}
 
-    getBlog = async () => {
-        
-    }
-
-    getBlogList =  () => {
-		return new Promise(async (resolve, reject) => {
-			const result = await this.instanceModelBBlog.find({}, {}, {sort: "-1"})
+    getBlog = async (query: object) => {
+        return new Promise(async (resolve, reject) => {
+			const result = await this.instanceModelBBlog.findOne(query, {}, {sort: { "created_at" : -1 }})
 			return resolve(result);
 		})
     }
 
-    searchBlog = async () => {
-        try{
-            const result = await this.instanceModelBBlog.find({ _id: "6146f853b3988223b689c256" })
-            return result;
-        }catch(err){
-            console.log(err);
-        }
+    getBlogList = (query: object, limit:number = 10) => {
+		return new Promise(async (resolve, reject) => {
+			const result = await this.instanceModelBBlog.find(query, {}, {sort: { "created_at" : -1 }}).limit(limit)
+			return resolve(result);
+		})
     }
 }
 
