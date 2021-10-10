@@ -1,5 +1,6 @@
 import { Model, model, Schema } from "mongoose";
 import { T_BlogSchema, I_BBlogModel } from "./types/typeModelBBlog"
+import { ServiceResponseResult } from "../types/shareType"
 
 class BBlogModel implements I_BBlogModel {
 	public blogSchema:Schema<T_BlogSchema>;
@@ -33,15 +34,23 @@ class BBlogModel implements I_BBlogModel {
 
     getBlog = async (query: object) => {
         return new Promise(async (resolve, reject) => {
-			const result = await this.instanceModelBBlog.findOne(query, {}, {sort: { "created_at" : -1 }})
-			return resolve(result);
+			try{
+				const result = await this.instanceModelBBlog.findOne(query, {}, {sort: { "created_at" : -1 }})
+				return resolve([result, null]);
+			}catch(err){
+				return reject([null, err]);
+			}
 		})
     }
 
     getBlogList = (query: object, limit:number = 10) => {
 		return new Promise(async (resolve, reject) => {
-			const result = await this.instanceModelBBlog.find(query, {}, {sort: { "created_at" : -1 }}).limit(limit)
-			return resolve(result);
+			try{
+				const result = await this.instanceModelBBlog.find(query, {}, {sort: { "created_at" : -1 }}).limit(limit)
+				return resolve(result);
+			}catch(err){
+				return reject(err);
+			}
 		})
     }
 }
