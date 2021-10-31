@@ -3,14 +3,11 @@ import slugify from "slugify";
 import CustomResponse from "../modules/responseObj";
 import serviceBBlog from "../services/serviceBBlog";
 import modelBBlog from "../models/modelBBlog";
+import { T_Header, ServiceResponseResult } from "../shared/types"
 
-type T_QueryParam = string | null | undefined
-type T_SearchBlog<T> = T extends object
-? { 
-	title: T_QueryParam
+type T_SearchBlog = { 
+	title: string | null | undefined
 }
-: never
-
 class BBlogController {
 	createBlog = (req:Request, res:Response) => {
 		let service = new serviceBBlog(modelBBlog);
@@ -25,15 +22,14 @@ class BBlogController {
 		let slug = req.params.slug ?? null;
 
 		if(slug === null){
-			response.set404(serviceName);
+			response.setCustomFailureResponse(serviceName, 404);
         	return res.status(response.statusCode).send(response);
 		}
 
         let service = new serviceBBlog(modelBBlog);
-		let result = await service.getBlog(slug);
-
-		if(result === null) {
-			response.set404(serviceName);
+		let [result, error] = await service.getBlog(slug);
+		if(error !== null) {
+			response.setCustomFailureResponse(serviceName, 404);
         	return res.status(response.statusCode).send(response);
 		}
 
@@ -54,14 +50,14 @@ class BBlogController {
 			if(lastId === ''){
 				lastId = null;
 			}
-			let queryParam = req.query as T_SearchBlog<typeof req.query>;
-			let title:T_QueryParam = queryParam.title ?? null;
+			let queryParam = req.query as T_SearchBlog;
+			let title = queryParam.title ?? null;
 
 			let service = new serviceBBlog(modelBBlog);
 			let [result, error] = await service.getBlogList(lastId, title);
 			if(error !== null) {
 				console.log(error)
-				response.set500(serviceName);
+				response.setCustomFailureResponse(serviceName, 500);
 				return res.status(response.statusCode).send(response);
 			}
 			let responseData = {
@@ -71,7 +67,7 @@ class BBlogController {
 			return res.send(response);
 		}catch(err){
 			console.log(err);
-			response.set500(serviceName);
+			response.setCustomFailureResponse(serviceName, 500);
 			return res.send(response);
 		}
     }

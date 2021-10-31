@@ -1,3 +1,5 @@
+import { Document } from "mongoose";
+
 type T_BlogSchema = {
 	slug: string,
 	title: string,
@@ -7,13 +9,15 @@ type T_BlogSchema = {
     created_by?: string,
 }
 
+type ResultBlogSchema = Document<T_BlogSchema>[] | (Document<T_BlogSchema> | null)
 interface I_BBlogModel {
 	createBlog: (data: T_BlogSchema) => void;
-    getBlog: (query: object) => Promise<any>; // TODO Change to proper type later proper type later
-    getBlogList: (query: object, limit?:number) => Promise<any>; // TODO Change to proper type later proper type later
+    getBlog: (query: object) => Promise<ResultBlogSchema>;
+    getBlogList: (query: object, limit?:number) => Promise<ResultBlogSchema>;
 }
 
 export {
 	I_BBlogModel,
-	T_BlogSchema
+	T_BlogSchema,
+	ResultBlogSchema
 }

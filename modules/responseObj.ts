@@ -1,11 +1,14 @@
 class ResponseObjClass {
-	serviceName: string = '';
+	serviceName: string = "";
 	status: boolean = false;
-	statusCode: number = 404;
-	message: (string|null) = 'Not Found';
+	statusCode: number = 0;
+	message: string = "";
 	response: any = null;
 
 	setResponse(serviceName:string, statusCode:number, message:(string|null), status:boolean, response?: object | null){
+		if(message === null){
+			message = "";
+		}
 		this.serviceName = serviceName;
 		this.status = status;
 		this.statusCode = statusCode;
@@ -13,29 +16,27 @@ class ResponseObjClass {
 		this.response = response ?? null;
 	}
 
-	set400(serviceName:string, message:(string|null)){
+	setCustomFailureResponse(serviceName:string, statusCode:number, message?:string){
+		if(message === undefined){
+			switch(statusCode){
+				case 500:
+					message = "Internal Server Error";
+				case 404:
+					message = "Not Found";
+				case 400:
+					message = "Internal Server Error";
+				default:
+					message = ""
+			}
+		}
+
 		this.serviceName = serviceName;
 		this.status = false;
-		this.statusCode = 400;
+		this.statusCode = statusCode;
 		this.message = message;
 		this.response = null
 	}
 
-	set500(serviceName:string, message?:(string|null)){
-		this.serviceName = serviceName;
-		this.status = false;
-		this.statusCode = 500;
-		this.message = message ?? "Internal Server Error";
-		this.response = null;
-	}
-
-	set404(serviceName:string, message?:(string|null)){
-		this.serviceName = serviceName;
-		this.status = false;
-		this.statusCode = 500;
-		this.message = message ?? "Not Found";
-		this.response = null;
-	}
 }
 
 export default ResponseObjClass;

@@ -1,6 +1,5 @@
 import { Model, model, Schema } from "mongoose";
-import { T_BlogSchema, I_BBlogModel } from "./types/typeModelBBlog"
-import { ServiceResponseResult } from "../types/shareType"
+import { T_BlogSchema, I_BBlogModel, ResultBlogSchema } from "./types/typeModelBBlog"
 
 class BBlogModel implements I_BBlogModel {
 	public blogSchema:Schema<T_BlogSchema>;
@@ -21,29 +20,29 @@ class BBlogModel implements I_BBlogModel {
 	}
 
 	createBlog = async (data: T_BlogSchema) => {
-		try{
-			const docBBlog = new this.instanceModelBBlog(data);
-			await docBBlog.save();
+		// try{
+		// 	const docBBlog = new this.instanceModelBBlog(data);
+		// 	await docBBlog.save();
 
-			console.log(docBBlog);
-		}catch(err){
-			console.log(err);
+		// 	console.log(docBBlog);
+		// }catch(err){
+		// 	console.log(err);
 
-		}
+		// }
 	}
 
-    getBlog = async (query: object) => {
+    getBlog = async (query: object): Promise<ResultBlogSchema> => {
         return new Promise(async (resolve, reject) => {
 			try{
 				const result = await this.instanceModelBBlog.findOne(query, {}, {sort: { "created_at" : -1 }})
-				return resolve([result, null]);
+				return resolve(result);
 			}catch(err){
-				return reject([null, err]);
+				return reject(err);
 			}
 		})
     }
 
-    getBlogList = (query: object, limit:number = 10) => {
+    getBlogList = (query: object, limit:number = 10): Promise<ResultBlogSchema> => {
 		return new Promise(async (resolve, reject) => {
 			try{
 				const result = await this.instanceModelBBlog.find(query, {}, {sort: { "created_at" : -1 }}).limit(limit)

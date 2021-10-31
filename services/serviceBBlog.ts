@@ -1,6 +1,6 @@
 import { I_BBlogModel } from "../models/types/typeModelBBlog"
 import { I_BBlogService } from "../services/publicServiceBBlog"
-import { T_Header, ServiceResponseResult } from "../types/shareType"
+import { T_Header, ServiceResponseResult } from "../shared/types"
 
 export default class BBlogService implements I_BBlogService{
 	constructor(
@@ -16,12 +16,17 @@ export default class BBlogService implements I_BBlogService{
 		// this.mBBlog.createBlog(data);
 	// }
 
-    getBlog = async (slug: string) => {
-		let query = {
-			slug: slug
+    getBlog = async (slug: string): Promise<ServiceResponseResult> => {
+		try{
+			let query = {
+				slug: slug
+			}
+
+			let result = await this.mBBlog.getBlog(query);
+			return [result, null];
+		}catch(err){
+			return [null, err];
 		}
-		let result = await this.mBBlog.getBlog(query);
-		return result;
     }
 
     getBlogList = async (lastId: T_Header, title: string|null): Promise<ServiceResponseResult> => {
