@@ -29,7 +29,7 @@ export default class BBlogService implements I_BBlogService{
 		}
     }
 
-    getBlogList = async (lastId: T_Header, title: string|null): Promise<ServiceResponseResult> => {
+    getBlogList = async (lastId: T_Header, title?: string|null): Promise<ServiceResponseResult> => {
 		try{
 			let query = {}
 			if(lastId !== null){
@@ -39,7 +39,7 @@ export default class BBlogService implements I_BBlogService{
 				}
 			}
 
-			if(title !== null){
+			if(title !== undefined && title !== null){
 				query = {
 					...query,
 					title: new RegExp(title, "g")
