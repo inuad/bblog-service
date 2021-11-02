@@ -1,5 +1,5 @@
-import { I_BBlogModel } from "../models/types/typeModelBBlog"
-import { I_BBlogService } from "../services/publicServiceBBlog"
+import { I_BBlogModel, T_BlogSchema } from "../models/types/typeModelBBlog"
+import { I_BBlogService } from "./types/publicServiceBBlog"
 import { T_Header, ServiceResponseResult } from "../shared/types"
 
 export default class BBlogService implements I_BBlogService{
@@ -7,14 +7,14 @@ export default class BBlogService implements I_BBlogService{
 		protected mBBlog: I_BBlogModel
 	){}
 
-	// createBlog = () => {
-        // let data = {
-        //     title: "Hello world",
-        //     detail: "ABCDE",
-        //     image: "Pic",
-        // }
-		// this.mBBlog.createBlog(data);
-	// }
+	createBlog = async (data: T_BlogSchema): Promise<ServiceResponseResult> => {
+        try{
+			let result = await this.mBBlog.createBlog(data);
+			return [result, null];
+		}catch(err){
+			return [null, err];
+		}
+	}
 
     getBlog = async (slug: string): Promise<ServiceResponseResult> => {
 		try{

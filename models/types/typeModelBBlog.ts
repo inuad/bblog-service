@@ -11,7 +11,7 @@ type T_BlogSchema = {
 
 type ResultBlogSchema = Document<T_BlogSchema>[] | (Document<T_BlogSchema> | null)
 interface I_BBlogModel {
-	createBlog: (data: T_BlogSchema) => void;
+	createBlog: (data: T_BlogSchema) => Promise<ResultBlogSchema>;
     getBlog: (query: object) => Promise<ResultBlogSchema>;
     getBlogList: (query: object, limit?:number) => Promise<ResultBlogSchema>;
 }

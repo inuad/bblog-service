@@ -19,16 +19,16 @@ class BBlogModel implements I_BBlogModel {
 		this.instanceModelBBlog = model<T_BlogSchema>('Blog', this.blogSchema);
 	}
 
-	createBlog = async (data: T_BlogSchema) => {
-		// try{
-		// 	const docBBlog = new this.instanceModelBBlog(data);
-		// 	await docBBlog.save();
-
-		// 	console.log(docBBlog);
-		// }catch(err){
-		// 	console.log(err);
-
-		// }
+	createBlog = async (data: T_BlogSchema): Promise<ResultBlogSchema> => {
+		return new Promise(async (resolve, reject) => {
+			try{
+				const docBBlog = new this.instanceModelBBlog(data);
+				const result = await docBBlog.save();
+				return resolve(result);
+			}catch(err){
+				return reject(err);
+			}
+		});
 	}
 
     getBlog = async (query: object): Promise<ResultBlogSchema> => {

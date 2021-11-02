@@ -9,11 +9,33 @@ type T_SearchBlog = {
 	title: string | null | undefined
 }
 class BBlogController {
-	createBlog = (req:Request, res:Response) => {
-		let service = new serviceBBlog(modelBBlog);
-		// service.createBlog();
+	createBlog = async (req:Request, res:Response) => {
+		const serviceName = "Get Blog";
+		let response = new CustomResponse();
+		let slug = req.params.slug ?? null;
 
-		return res.send("Create blog");
+		try{
+			let preData = {
+				title: "Hello world",
+				detail: "ABCDE",
+				image: "Pic",
+				slug: "/aaa/"
+			}
+
+			let service = new serviceBBlog(modelBBlog);
+			let result = await service.createBlog(preData);
+
+			let responseData = {
+				data: result
+			}
+
+			response.setResponse(serviceName, 200, "Success", true, responseData);
+        	return res.status(response.statusCode).send(response);
+		}catch(err){
+			console.log(err);
+			response.setCustomFailureResponse(serviceName, 500);
+			return res.send(response);
+		}
 	}
 
     getBlog = async (req:Request, res:Response) => {
