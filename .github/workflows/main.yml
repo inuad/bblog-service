@@ -12,6 +12,13 @@ on:
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
+    inputs:
+        name:
+          description: 'Person to greet'
+          required: true
+        home:
+          description: 'location'
+          required: false
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -27,7 +34,7 @@ jobs:
 
       # Runs a single command using the runners shell
       - name: Run a one-line script
-        run: echo Hello, world! Test
+        run: echo "Hello ${{ github.event.inputs.name }}!"
 
       - name: Test Login Heroku
         env:
