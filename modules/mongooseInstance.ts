@@ -7,15 +7,14 @@ class MongoInstance {
 
 	public connectMongo(mongoUrl:string, options:object = this.options) :Promise<boolean> {
 		return new Promise(async (resolve, reject) => {
-			connect(mongoUrl, options)
-			.then(() => {
+			try{
+				await connect(mongoUrl, options)
 				console.log("Mongo connected");
 				return resolve(true);
-			})
-			.catch((err) => {
+			}catch(err) {
 				console.log(err)
 				return reject(false);
-			})
+			}
 		});
 	}
 
