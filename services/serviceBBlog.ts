@@ -29,16 +29,9 @@ export default class BBlogService implements I_BBlogService{
 		}
     }
 
-    getBlogList = async (lastId: T_Header, title?: string|null): Promise<ServiceResponseResult> => {
+    getBlogList = async (title: string|null, lastId: T_Header, limit: number = 10): Promise<ServiceResponseResult> => {
 		try{
 			let query = {}
-			if(lastId !== null){
-				query = {
-					...query,
-					_id: { $lte : lastId }
-				}
-			}
-
 			if(title !== undefined && title !== null){
 				query = {
 					...query,
@@ -46,10 +39,17 @@ export default class BBlogService implements I_BBlogService{
 				}
 			}
 
-			let result = await this.mBBlog.getBlogList(query);
+			if(lastId !== null){
+				query = {
+					...query,
+					_id: { $lte : lastId }
+				}
+			}
+
+			let result = await this.mBBlog.getBlogList(query, limit);
 			return [result, null];
 		}catch(err){
-			return [null, err];
+			return [null, err as Error];
 		}
     }
 }

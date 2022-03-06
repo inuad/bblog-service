@@ -42,15 +42,13 @@ class BBlogModel implements I_BBlogModel {
 		})
     }
 
-    getBlogList = (query: object, limit:number = 10): Promise<ResultBlogSchema> => {
-		return new Promise(async (resolve, reject) => {
-			try{
-				const result = await this.instanceModelBBlog.find(query, {}, {sort: { "created_at" : -1 }}).limit(limit)
-				return resolve(result);
-			}catch(err){
-				return reject(err);
-			}
-		})
+    getBlogList = async (query: object, limit:number): Promise<ResultBlogSchema> => {
+		try{
+			const result = await this.instanceModelBBlog.find(query, {}, {sort: { "created_at" : -1 }}).limit(limit)
+			return result;
+		}catch(err){
+			return err as Error;
+		}
     }
 }
 

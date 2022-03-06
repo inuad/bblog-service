@@ -76,7 +76,7 @@ class BBlogController {
 			let title = queryParam.title ?? null;
 
 			let service = new serviceBBlog(modelBBlog);
-			let [result, error] = await service.getBlogList(lastId, title);
+			let [result, error] = await service.getBlogList(title, lastId, 10);
 			if(error !== null) {
 				console.log(error)
 				response.setCustomFailureResponse(serviceName, 500);

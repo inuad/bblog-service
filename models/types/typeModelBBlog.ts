@@ -9,11 +9,11 @@ type T_BlogSchema = {
     created_by?: string,
 }
 
-type ResultBlogSchema = Document<T_BlogSchema>[] | (Document<T_BlogSchema> | null)
+type ResultBlogSchema = Document<T_BlogSchema>[] | (Document<T_BlogSchema> | Error | null)
 interface I_BBlogModel {
 	createBlog: (data: T_BlogSchema) => Promise<ResultBlogSchema>;
     getBlog: (query: object) => Promise<ResultBlogSchema>;
-    getBlogList: (query: object, limit?:number) => Promise<ResultBlogSchema>;
+    getBlogList: (query: object, limit:number) => Promise<ResultBlogSchema>;
 }
 
 export {
